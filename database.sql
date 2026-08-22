@@ -142,3 +142,56 @@ CREATE TABLE employee_projects (
 );
 
 -- --------------------------------------------------------
+-- SEED DATA
+-- --------------------------------------------------------
+
+-- Insert Initial Departments
+INSERT INTO departments (department_id, department_name, description, location, manager_id) VALUES
+(1, 'Management', 'Executive leadership and core administration.', 'Executive Suite - Floor 5', NULL),
+(2, 'Human Resources', 'Talent acquisition, payroll, employee welfare.', 'Admin Wing - Floor 2', NULL),
+(3, 'Engineering', 'Software engineering and IT operations.', 'Tech Lab - Floor 3', NULL),
+(4, 'Sales', 'Business development and client acquisition.', 'Sales Room - Floor 1', NULL);
+
+-- Insert Initial Employees
+-- Note: manager_id values will be updated after inserting the records to prevent FK issues.
+INSERT INTO employees (employee_id, first_name, last_name, email, phone, gender, address, hire_date, designation, salary, department_id, manager_id, employment_status) VALUES
+(1, 'Admin', 'User', 'admin@erp.com', '555-0100', 'OTHER', '123 ERP Main Office', '2025-01-01', 'System Administrator', 95000.00, 1, NULL, 'ACTIVE'),
+(2, 'Sarah', 'Jenkins', 'hr@erp.com', '555-0102', 'FEMALE', '456 HR Blvd', '2025-02-15', 'HR Manager', 65000.00, 2, 1, 'ACTIVE'),
+(3, 'David', 'Miller', 'manager@erp.com', '555-0103', 'MALE', '789 Manager Way', '2025-03-01', 'Engineering Manager', 85000.00, 3, 1, 'ACTIVE'),
+(4, 'Alex', 'Smith', 'employee@erp.com', '555-0104', 'MALE', '101 Developer Lane', '2025-04-01', 'Software Engineer', 50000.00, 3, 3, 'ACTIVE');
+
+-- Update Departments with Manager IDs
+UPDATE departments SET manager_id = 1 WHERE department_id = 1;
+UPDATE departments SET manager_id = 2 WHERE department_id = 2;
+UPDATE departments SET manager_id = 3 WHERE department_id = 3;
+
+-- Insert User Credentials (Hashed password for 'password123' is $2y$10$gE1er5pwmod4LgcKk0lpUO9IFU68i0VsNqP9NzEC3Bltx5K5MmBLy)
+INSERT INTO users (user_id, username, email, password_hash, role, employee_id, account_status) VALUES
+(1, 'admin', 'admin@erp.com', '$2y$10$gE1er5pwmod4LgcKk0lpUO9IFU68i0VsNqP9NzEC3Bltx5K5MmBLy', 'ADMIN', 1, 'ACTIVE'),
+(2, 'hr_sarah', 'hr@erp.com', '$2y$10$gE1er5pwmod4LgcKk0lpUO9IFU68i0VsNqP9NzEC3Bltx5K5MmBLy', 'HR', 2, 'ACTIVE'),
+(3, 'manager_david', 'manager@erp.com', '$2y$10$gE1er5pwmod4LgcKk0lpUO9IFU68i0VsNqP9NzEC3Bltx5K5MmBLy', 'MANAGER', 3, 'ACTIVE'),
+(4, 'alex_dev', 'employee@erp.com', '$2y$10$gE1er5pwmod4LgcKk0lpUO9IFU68i0VsNqP9NzEC3Bltx5K5MmBLy', 'EMPLOYEE', 4, 'ACTIVE');
+
+-- Seed Attendance Records
+INSERT INTO attendance (employee_id, attendance_date, check_in, check_out, status, working_hours, remarks) VALUES
+(4, '2026-08-22', '09:00:00', '17:30:00', 'PRESENT', 8.50, 'Regular check-in'),
+(4, '2026-08-23', '08:55:00', '17:00:00', 'PRESENT', 8.08, 'Completed daily tasks');
+
+-- Seed Leave Applications
+INSERT INTO leaves (employee_id, start_date, end_date, leave_type, reason, status, approved_by, approved_at) VALUES
+(4, '2026-08-28', '2026-08-29', 'CASUAL', 'Family function attendance', 'PENDING', NULL, NULL),
+(4, '2026-08-10', '2026-08-10', 'SICK', 'High fever and cold', 'APPROVED', 2, '2026-08-10 10:15:00');
+
+-- Seed Payroll History
+INSERT INTO payroll (employee_id, salary_month, basic_salary, allowance, bonus, deduction, tax, net_salary, payment_status, payment_date) VALUES
+(4, '2026-07-01', 50000.00, 5000.00, 2000.00, 1000.00, 3000.00, 53000.00, 'PAID', '2026-07-31'),
+(4, '2026-08-01', 50000.00, 5000.00, 0.00, 0.00, 3000.00, 52000.00, 'PENDING', NULL);
+
+-- Seed Projects
+INSERT INTO projects (project_id, project_name, description, start_date, end_date, budget, status, manager_id) VALUES
+(1, 'Centralized ERP Portal', 'Development of the unified corporate dashboard for all departments.', '2026-04-15', '2026-10-31', 150000.00, 'ACTIVE', 3),
+(2, 'Analytics Engine', 'Big data analytics dashboard and warehouse migration.', '2026-09-01', NULL, 80000.00, 'PLANNED', 3);
+
+-- Seed Employee Project Assignments
+INSERT INTO employee_projects (employee_id, project_id, role, assigned_date, assignment_status) VALUES
+(4, 1, 'Full-Stack Developer', '2026-04-20', 'ACTIVE');
