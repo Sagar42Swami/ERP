@@ -1,0 +1,100 @@
+/* ==========================================================================
+   CENTRALIZED ERP DESIGN SYSTEM - MODERN DARK MODE THEME
+   ========================================================================== */
+
+/* Google Fonts Import - Outfit */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Color Palette (HSL System) */
+    --bg-main: hsl(222, 47%, 10%);
+    --bg-card: hsl(223, 47%, 15%);
+    --bg-sidebar: hsl(224, 47%, 12%);
+    --border-color: hsl(223, 25%, 22%);
+    --border-glow: hsla(225, 80%, 60%, 0.15);
+    
+    --primary: hsl(225, 80%, 60%);
+    --primary-hover: hsl(225, 85%, 65%);
+    --primary-glow: hsla(225, 80%, 60%, 0.3);
+    
+    --text-main: hsl(210, 40%, 98%);
+    --text-muted: hsl(215, 20%, 65%);
+    --text-dark: hsl(220, 20%, 15%);
+    
+    /* Semantic Status Colors */
+    --color-success: hsl(145, 80%, 40%);
+    --color-success-bg: hsla(145, 80%, 40%, 0.15);
+    --color-warning: hsl(38, 92%, 50%);
+    --color-warning-bg: hsla(38, 92%, 50%, 0.15);
+    --color-danger: hsl(0, 85%, 60%);
+    --color-danger-bg: hsla(0, 85%, 60%, 0.15);
+    --color-info: hsl(195, 85%, 50%);
+    --color-info-bg: hsla(195, 85%, 50%, 0.15);
+
+    /* UI Tokens */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-main: 0 8px 30px rgba(0, 0, 0, 0.3);
+    --shadow-inset: inset 0 2px 4px rgba(255, 255, 255, 0.03);
+}
+
+/* Base resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+a {
+    color: var(--primary-hover);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+a:hover {
+    color: var(--text-main);
+}
+
+/* ==========================================================================
+   AUTH PORTAL PAGES (index.html, signup.html)
+   ========================================================================== */
+
+.erp-shell {
+    display: flex;
+    min-height: 100vh;
+    width: 100vw;
+}
+
+/* Left Hero Panel */
+.erp-panel {
+    background: linear-gradient(135deg, var(--bg-sidebar) 0%, var(--bg-main) 100%);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    position: relative;
+    width: 400px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.erp-panel::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: -100px;
+    width: 300px;
