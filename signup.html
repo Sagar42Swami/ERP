@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Registration - Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="erp-shell">
+        <aside class="erp-panel">
+            <div class="brand">
+                <div class="brand-mark">ERP</div>
+                <div>
+                    <p class="brand-name">Corporate ERP</p>
+                    <p class="brand-subtitle">Registration Portal</p>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <p class="panel-label">Onboarding</p>
+                <h2>Create an ERP Account</h2>
+                <p>Register a new employee and associate their login profile with role-based access control. All details are saved in the centralized MySQL database.</p>
+            </div>
+
+            <div class="panel-status">
+                <span></span>
+                MySQL & PHP Backend Active
+            </div>
+        </aside>
+
+        <main class="auth-area">
+            <div class="card wide-card">
+                <p class="eyebrow">New Staff Registration</p>
+                <h1>Get Started</h1>
+                <p class="form-intro">Provide professional and login details below to set up your account.</p>
+
+                <form action="signup.php" method="POST" id="signupForm" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="signupFirstName">First Name</label>
+                            <input type="text" id="signupFirstName" name="first_name" placeholder="Alex" required>
+                            <p class="error" id="signupFirstNameError"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupLastName">Last Name</label>
+                            <input type="text" id="signupLastName" name="last_name" placeholder="Smith" required>
+                            <p class="error" id="signupLastNameError"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupEmail">Email Address</label>
+                            <input type="email" id="signupEmail" name="email" placeholder="alex@company.com" required>
+                            <p class="error" id="signupEmailError"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupPhone">Phone Number</label>
+                            <input type="text" id="signupPhone" name="phone" placeholder="555-0104" required>
+                            <p class="error" id="signupPhoneError"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupRole">User Role</label>
+                            <select id="signupRole" name="role" required>
+                                <option value="EMPLOYEE">Employee (Standard Access)</option>
+                                <option value="MANAGER">Manager (Team & Projects Control)</option>
+                                <option value="HR">HR Specialist (Payroll & Personnel)</option>
+                                <option value="ADMIN">System Administrator (Complete Control)</option>
+                            </select>
+                            <p class="error" id="signupRoleError"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupDepartment">Department</label>
+                            <select id="signupDepartment" name="department_id" required>
+                                <option value="3">Engineering</option>
+                                <option value="2">Human Resources</option>
+                                <option value="4">Sales</option>
+                                <option value="1">Management</option>
+                            </select>
+                            <p class="error" id="signupDepartmentError"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupDesignation">Job Designation</label>
+                            <input type="text" id="signupDesignation" name="designation" placeholder="Software Engineer" required>
+                            <p class="error" id="signupDesignationError"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupSalary">Salary (USD)</label>
+                            <input type="number" id="signupSalary" name="salary" placeholder="50000" min="0" value="50000" required>
+                            <p class="error" id="signupSalaryError"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" name="password" placeholder="At least 6 characters" required>
+                            <p class="error" id="signupPasswordError"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirm password" required>
+                            <p class="error" id="confirmPasswordError"></p>
+                        </div>
+                    </div>
+
+                    <button type="submit">Create Account</button>
+                </form>
+
+                <p class="switch-link">
+                    Already have an account? <a href="index.html">Login</a>
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
