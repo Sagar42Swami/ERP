@@ -78,3 +78,51 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// ----------------------------------------------------
+// DYNAMIC FORM POPULATION (HR / ADMIN)
+// ----------------------------------------------------
+
+// Populate employee editor form fields when an option is selected
+function populateEmployeeEditForm(empId) {
+    if (!empId) {
+        document.getElementById("edit_emp_fname").value = "";
+        document.getElementById("edit_emp_lname").value = "";
+        document.getElementById("edit_emp_email").value = "";
+        document.getElementById("edit_emp_phone").value = "";
+        document.getElementById("edit_emp_salary").value = "";
+        document.getElementById("edit_emp_desig").value = "";
+        document.getElementById("edit_emp_dept").value = "";
+        document.getElementById("edit_emp_mgr").value = "0";
+        document.getElementById("edit_emp_status").value = "ACTIVE";
+        return;
+    }
+
+    const row = document.getElementById("emp_row_" + empId);
+    if (row) {
+        document.getElementById("edit_emp_fname").value = row.getAttribute("data-fname") || "";
+        document.getElementById("edit_emp_lname").value = row.getAttribute("data-lname") || "";
+        document.getElementById("edit_emp_email").value = row.getAttribute("data-email") || "";
+        document.getElementById("edit_emp_phone").value = row.getAttribute("data-phone") || "";
+        document.getElementById("edit_emp_salary").value = row.getAttribute("data-salary") || "";
+        document.getElementById("edit_emp_desig").value = row.getAttribute("data-desig") || "";
+        document.getElementById("edit_emp_dept").value = row.getAttribute("data-dept") || "";
+        document.getElementById("edit_emp_mgr").value = row.getAttribute("data-mgr") || "0";
+        document.getElementById("edit_emp_status").value = row.getAttribute("data-status") || "ACTIVE";
+    }
+}
+
+// Populate user account editor fields in Admin tab
+function populateUserEditForm(userId) {
+    if (!userId) {
+        document.getElementById("edit_user_role").value = "EMPLOYEE";
+        document.getElementById("edit_user_status").value = "ACTIVE";
+        return;
+    }
+
+    const row = document.getElementById("user_row_" + userId);
+    if (row) {
+        document.getElementById("edit_user_role").value = row.getAttribute("data-role") || "EMPLOYEE";
+        document.getElementById("edit_user_status").value = row.getAttribute("data-status") || "ACTIVE";
+    }
+}
+
