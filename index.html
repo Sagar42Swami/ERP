@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Portal - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="erp-shell">
+        <aside class="erp-panel">
+            <div class="brand">
+                <div class="brand-mark">ERP</div>
+                <div>
+                    <p class="brand-name">Corporate ERP</p>
+                    <p class="brand-subtitle">Access Portal</p>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <p class="panel-label">Workspace Access</p>
+                <h2>Sign in to continue</h2>
+                <p>Welcome back! Enter your user profile email or unique username to access your department-specific workspace, punch attendance, review payroll, or manage project resources.</p>
+            </div>
+
+            <div class="panel-status">
+                <span></span>
+                ERP Main Server Online
+            </div>
+        </aside>
+
+        <main class="auth-area">
+            <div class="card">
+                <p class="eyebrow">Secure Login</p>
+                <h1>Welcome Back</h1>
+                <p class="form-intro">Enter your account details to access the dashboard.</p>
+
+                <form action="login.php" method="POST" id="loginForm" novalidate>
+                    <div class="form-group">
+                        <label for="loginEmail">Username or Email Address</label>
+                        <input type="text" id="loginEmail" name="email" placeholder="e.g. alex_dev or admin@erp.com" required>
+                        <p class="error" id="loginEmailError"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="••••••••" required>
+                        <p class="error" id="loginPasswordError"></p>
+                    </div>
+
+                    <button type="submit">Login to Workspace</button>
+                </form>
+
+                <p class="switch-link">
+                    New Employee onboarding? <a href="signup.html">Sign Up Here</a>
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
