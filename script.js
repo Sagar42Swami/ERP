@@ -126,3 +126,111 @@ function populateUserEditForm(userId) {
     }
 }
 
+// ----------------------------------------------------
+// FRONT-END FORM VALIDATIONS
+// ----------------------------------------------------
+
+// Sign Up Form Validation
+const signupForm = document.getElementById("signupForm");
+if (signupForm) {
+    signupForm.addEventListener("submit", function (event) {
+        const fname = document.getElementById("signupFirstName").value.trim();
+        const lname = document.getElementById("signupLastName").value.trim();
+        const email = document.getElementById("signupEmail").value.trim();
+        const phone = document.getElementById("signupPhone").value.trim();
+        const designation = document.getElementById("signupDesignation").value.trim();
+        const salary = document.getElementById("signupSalary").value.trim();
+        const password = document.getElementById("signupPassword").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        
+        let isValid = true;
+
+        showError("signupFirstNameError", "");
+        showError("signupLastNameError", "");
+        showError("signupEmailError", "");
+        showError("signupPhoneError", "");
+        showError("signupDesignationError", "");
+        showError("signupSalaryError", "");
+        showError("signupPasswordError", "");
+        showError("confirmPasswordError", "");
+
+        if (fname === "") {
+            showError("signupFirstNameError", "First name is required.");
+            isValid = false;
+        }
+        if (lname === "") {
+            showError("signupLastNameError", "Last name is required.");
+            isValid = false;
+        }
+
+        if (email === "") {
+            showError("signupEmailError", "Email address is required.");
+            isValid = false;
+        } else if (!isValidEmail(email)) {
+            showError("signupEmailError", "Provide a valid email format.");
+            isValid = false;
+        }
+
+        if (phone === "") {
+            showError("signupPhoneError", "Phone number is required.");
+            isValid = false;
+        }
+
+        if (designation === "") {
+            showError("signupDesignationError", "Job designation is required.");
+            isValid = false;
+        }
+
+        if (salary === "" || isNaN(salary) || parseFloat(salary) < 0) {
+            showError("signupSalaryError", "Please input a positive numeric salary.");
+            isValid = false;
+        }
+
+        if (password === "") {
+            showError("signupPasswordError", "Password is required.");
+            isValid = false;
+        } else if (password.length < 6) {
+            showError("signupPasswordError", "Password must contain at least 6 characters.");
+            isValid = false;
+        }
+
+        if (confirmPassword === "") {
+            showError("confirmPasswordError", "Confirm password is required.");
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            showError("confirmPasswordError", "Passwords do not match.");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+}
+
+// Login Form Validation
+const loginForm = document.getElementById("loginForm");
+if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+        let isValid = true;
+
+        showError("loginEmailError", "");
+        showError("loginPasswordError", "");
+
+        if (email === "") {
+            showError("loginEmailError", "Username or Email is required.");
+            isValid = false;
+        }
+
+        if (password === "") {
+            showError("loginPasswordError", "Password is required.");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+}
