@@ -409,4 +409,277 @@ if (in_array($role, ["ADMIN", "HR", "MANAGER"])) {
                 <?php endif; ?>
             </section>
 
+            <!-- ---------------------------------------------------- -->
+            <!-- EMPLOYEE TABS -->
+            <!-- ---------------------------------------------------- -->
+            <?php if ($role === "EMPLOYEE"): ?>
+                <!-- Attendance Tab -->
+                <section id="emp-attendance" class="tab-content">
+                    <div class="section-header">
+                        <h2>My Attendance Log</h2>
+                        <p>Daily shift records, check-in, check-out and working hours.</p>
+                    </div>
+
+                    <div class="attendance-control content-panel">
+                        <h3>Shift Attendance Action</h3>
+                        <p>Check in when you start your working day, and check out when you complete your hours.</p>
+                        
+                        <div class="btn-row">
+                            <form action="actions.php" method="POST">
+                                <input type="hidden" name="action" value="check_in">
+                                <button class="action-btn checkin-btn" type="submit" <?php echo !empty($attendance_today) ? "disabled" : ""; ?>>
+                                    Check-In
+                                </button>
+                            </form>
+                            
+                            <form action="actions.php" method="POST">
+                                <input type="hidden" name="action" value="check_out">
+                                <button class="action-btn checkout-btn" type="submit" <?php echo (empty($attendance_today) || !empty($attendance_today["check_out"])) ? "disabled" : ""; ?>>
+                                    Check-Out
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table-container content-panel">
+                        <h3>Past Attendance Records</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                    <th>Working Hours</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $stmt = $conn->prepare("SELECT * FROM attendance WHERE employee_id = ? ORDER BY attendance_date DESC LIMIT 30");
+                                $stmt->bind_param("i", $employee_id);
+                                $stmt->execute();
+                                $res = $stmt->get_result();
+                                if ($res->num_rows > 0):
+                                    while ($att = $res->fetch_assoc()):
+                                ?>
+                                    <tr>
+                                        <td><strong><?php echo $att["attendance_date"]; ?></strong></td>
+                                        <td><?php echo $att["check_in"] ?? "â€”"; ?></td>
+                                        <td><?php echo $att["check_out"] ?? "â€”"; ?></td>
+                                        <td><?php echo $att["working_hours"] ? ($att["working_hours"] . " hrs") : "â€”"; ?></td>
+                                        <td><span class="badge status-<?php echo strtolower($att["status"]); ?>"><?php echo $att["status"]; ?></span></td>
+                                        <td><?php echo htmlspecialchars($att["remarks"] ?? ""); ?></td>
+                                    </tr>
+                                <?php 
+                                    endwhile;
+                                else:
+                                ?>
+                                    <tr>
+                                        <td colspan="6" class="center-text">No attendance records found yet.</td>
+                                    </tr>
+                                <?php endif; $stmt->close(); ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Leaves Tab -->
+                <section id="emp-leaves" class="tab-content">
+                    <div class="section-header">
+                        <h2>Leave Application Panel</h2>
+                        <p>Submit and review your time-off applications.</p>
+                    </div>
+
+                    <div class="grid-2col">
+                        <!-- Application Form -->
+                        <div class="card content-panel">
+                            <h3>Request Leave</h3>
+                            <form action="actions.php" method="POST" class="standard-form">
+                                <input type="hidden" name="action" value="apply_leave">
+
+                                <div class="form-group">
+                                    <label>Leave Type</label>
+                                    <select name="leave_type" required>
+                                        <option value="CASUAL">Casual Leave</option>
+                                        <option value="SICK">Sick Leave</option>
+                                        <option value="EARNED">Earned Leave</option>
+                                        <option value="UNPAID">Unpaid Leave</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <input type="date" name="start_date" required min="<?php echo date("Y-m-d"); ?>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <input type="date" name="end_date" required min="<?php echo date("Y-m-d"); ?>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Reason / Comments</label>
+                                    <textarea name="reason" placeholder="State reason for leave request" required rows="3"></textarea>
+                                </div>
+
+                                <button class="action-btn submit-btn" type="submit">Submit Leave Request</button>
+                            </form>
+                        </div>
+
+                        <!-- Leaves History -->
+                        <div class="table-container content-panel">
+                            <h3>Leave Request History</h3>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Dates</th>
+                                        <th>Type</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $stmt = $conn->prepare("SELECT * FROM leaves WHERE employee_id = ? ORDER BY applied_at DESC");
+                                    $stmt->bind_param("i", $employee_id);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    if ($res->num_rows > 0):
+                                        while ($l = $res->fetch_assoc()):
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <strong><?php echo $l["start_date"]; ?></strong> to<br>
+                                                <small><?php echo $l["end_date"]; ?></small>
+                                            </td>
+                                            <td><?php echo $l["leave_type"]; ?></td>
+                                            <td><small><?php echo htmlspecialchars($l["reason"]); ?></small></td>
+                                            <td><span class="badge status-<?php echo strtolower($l["status"]); ?>"><?php echo $l["status"]; ?></span></td>
+                                        </tr>
+                                    <?php 
+                                        endwhile;
+                                    else:
+                                    ?>
+                                        <tr>
+                                            <td colspan="4" class="center-text">No leave requests logged yet.</td>
+                                        </tr>
+                                    <?php endif; $stmt->close(); ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Payroll Tab -->
+                <section id="emp-payroll" class="tab-content">
+                    <div class="section-header">
+                        <h2>My Pay Slips</h2>
+                        <p>Monthly payroll calculations and payment confirmations.</p>
+                    </div>
+
+                    <div class="table-container content-panel">
+                        <h3>Salary Credit History</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Basic</th>
+                                    <th>Allowances (+)</th>
+                                    <th>Bonus (+)</th>
+                                    <th>Deductions (-)</th>
+                                    <th>Tax (-)</th>
+                                    <th>Net Salary</th>
+                                    <th>Status</th>
+                                    <th>Payment Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $stmt = $conn->prepare("SELECT * FROM payroll WHERE employee_id = ? ORDER BY salary_month DESC");
+                                $stmt->bind_param("i", $employee_id);
+                                $stmt->execute();
+                                $res = $stmt->get_result();
+                                if ($res->num_rows > 0):
+                                    while ($p = $res->fetch_assoc()):
+                                ?>
+                                    <tr>
+                                        <td><strong><?php echo date("F Y", strtotime($p["salary_month"])); ?></strong></td>
+                                        <td>$<?php echo number_format($p["basic_salary"], 2); ?></td>
+                                        <td>$<?php echo number_format($p["allowance"], 2); ?></td>
+                                        <td>$<?php echo number_format($p["bonus"], 2); ?></td>
+                                        <td>$<?php echo number_format($p["deduction"], 2); ?></td>
+                                        <td>$<?php echo number_format($p["tax"], 2); ?></td>
+                                        <td class="highlight-net">$<strong><?php echo number_format($p["net_salary"], 2); ?></strong></td>
+                                        <td><span class="badge status-<?php echo strtolower($p["payment_status"]); ?>"><?php echo $p["payment_status"]; ?></span></td>
+                                        <td><?php echo $p["payment_date"] ?? "â€”"; ?></td>
+                                    </tr>
+                                <?php 
+                                    endwhile;
+                                else:
+                                ?>
+                                    <tr>
+                                        <td colspan="9" class="center-text">No payroll sheets generated for your profile yet.</td>
+                                    </tr>
+                                <?php endif; $stmt->close(); ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Projects Tab -->
+                <section id="emp-projects" class="tab-content">
+                    <div class="section-header">
+                        <h2>My Assigned Projects</h2>
+                        <p>Detailed list of initiatives you are mapped to.</p>
+                    </div>
+
+                    <div class="table-container content-panel">
+                        <h3>Current Assignments</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Description</th>
+                                    <th>Your Role</th>
+                                    <th>Assigned Date</th>
+                                    <th>Manager</th>
+                                    <th>Project Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $stmt = $conn->prepare("SELECT p.project_name, p.description, p.status as p_status, ep.role, ep.assigned_date, mgr.first_name as m_first, mgr.last_name as m_last 
+                                                        FROM employee_projects ep 
+                                                        JOIN projects p ON ep.project_id = p.project_id 
+                                                        LEFT JOIN employees mgr ON p.manager_id = mgr.employee_id 
+                                                        WHERE ep.employee_id = ? AND ep.assignment_status = 'ACTIVE'");
+                                $stmt->bind_param("i", $employee_id);
+                                $stmt->execute();
+                                $res = $stmt->get_result();
+                                if ($res->num_rows > 0):
+                                    while ($pr = $res->fetch_assoc()):
+                                ?>
+                                    <tr>
+                                        <td><strong><?php echo htmlspecialchars($pr["project_name"]); ?></strong></td>
+                                        <td><small><?php echo htmlspecialchars($pr["description"]); ?></small></td>
+                                        <td><?php echo htmlspecialchars($pr["role"]); ?></td>
+                                        <td><?php echo $pr["assigned_date"]; ?></td>
+                                        <td><?php echo $pr["m_first"] ? htmlspecialchars($pr["m_first"] . " " . $pr["m_last"]) : "Admin Managed"; ?></td>
+                                        <td><span class="badge status-<?php echo strtolower($pr["p_status"]); ?>"><?php echo $pr["p_status"]; ?></span></td>
+                                    </tr>
+                                <?php 
+                                    endwhile;
+                                else:
+                                ?>
+                                    <tr>
+                                        <td colspan="6" class="center-text">You are not actively assigned to any projects.</td>
+                                    </tr>
+                                <?php endif; $stmt->close(); ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            <?php endif; ?>
+
 </main></div><script src="script.js"></script></body></html>
