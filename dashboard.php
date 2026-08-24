@@ -682,4 +682,237 @@ if (in_array($role, ["ADMIN", "HR", "MANAGER"])) {
                 </section>
             <?php endif; ?>
 
+            <!-- ---------------------------------------------------- -->
+            <!-- MANAGER TABS -->
+            <!-- ---------------------------------------------------- -->
+            <?php if ($role === "MANAGER"): ?>
+                <!-- Team Leaves Tab -->
+                <section id="mgr-leaves" class="tab-content">
+                    <div class="section-header">
+                        <h2>Team Leaves Approvals</h2>
+                        <p>Approve or Reject leave requests submitted by employees reporting to you.</p>
+                    </div>
+
+                    <div class="table-container content-panel">
+                        <h3>Pending Leave Requests</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Designation</th>
+                                    <th>Date range</th>
+                                    <th>Leave Type</th>
+                                    <th>Reason</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $stmt = $conn->prepare("SELECT l.*, e.first_name, e.last_name, e.designation 
+                                                        FROM leaves l 
+                                                        JOIN employees e ON l.employee_id = e.employee_id 
+                                                        WHERE e.manager_id = ? AND l.status = 'PENDING' 
+                                                        ORDER BY l.applied_at ASC");
+                                $stmt->bind_param("i", $employee_id);
+                                $stmt->execute();
+                                $res = $stmt->get_result();
+                                if ($res->num_rows > 0):
+                                    while ($l = $res->fetch_assoc()):
+                                ?>
+                                    <tr>
+                                        <td><strong><?php echo htmlspecialchars($l["first_name"] . " " . $l["last_name"]); ?></strong></td>
+                                        <td><small><?php echo htmlspecialchars($l["designation"]); ?></small></td>
+                                        <td><?php echo $l["start_date"]; ?> to <?php echo $l["end_date"]; ?></td>
+                                        <td><?php echo $l["leave_type"]; ?></td>
+                                        <td><small><?php echo htmlspecialchars($l["reason"]); ?></small></td>
+                                        <td>
+                                            <div class="flex-row">
+                                                <form action="actions.php" method="POST" style="margin-right: 5px;">
+                                                    <input type="hidden" name="action" value="update_leave_status">
+                                                    <input type="hidden" name="leave_id" value="<?php echo $l["leave_id"]; ?>">
+                                                    <input type="hidden" name="status" value="APPROVED">
+                                                    <button class="small-btn approve-btn" type="submit">Approve</button>
+                                                </form>
+                                                <form action="actions.php" method="POST">
+                                                    <input type="hidden" name="action" value="update_leave_status">
+                                                    <input type="hidden" name="leave_id" value="<?php echo $l["leave_id"]; ?>">
+                                                    <input type="hidden" name="status" value="REJECTED">
+                                                    <button class="small-btn reject-btn" type="submit">Reject</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php 
+                                    endwhile;
+                                else:
+                                ?>
+                                    <tr>
+                                        <td colspan="6" class="center-text">No pending leaves for your team.</td>
+                                    </tr>
+                                <?php endif; $stmt->close(); ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Team Attendance Tab -->
+                <section id="mgr-attendance" class="tab-content">
+                    <div class="section-header">
+                        <h2>Team Daily Attendance Tracking</h2>
+                        <p>Real-time view of attendance logs for your direct reports today (<?php echo $today; ?>).</p>
+                    </div>
+
+                    <div class="table-container content-panel">
+                        <h3>Team Presence Status</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Designation</th>
+                                    <th>Check-In</th>
+                                    <th>Check-Out</th>
+                                    <th>Working Hours</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $stmt = $conn->prepare("SELECT e.first_name, e.last_name, e.designation, a.check_in, a.check_out, a.working_hours, a.status 
+                                                        FROM employees e 
+                                                        LEFT JOIN attendance a ON e.employee_id = a.employee_id AND a.attendance_date = ? 
+                                                        WHERE e.manager_id = ? AND e.employment_status = 'ACTIVE'");
+                                $stmt->bind_param("si", $today, $employee_id);
+                                $stmt->execute();
+                                $res = $stmt->get_result();
+                                if ($res->num_rows > 0):
+                                    while ($t = $res->fetch_assoc()):
+                                ?>
+                                    <tr>
+                                        <td><strong><?php echo htmlspecialchars($t["first_name"] . " " . $t["last_name"]); ?></strong></td>
+                                        <td><small><?php echo htmlspecialchars($t["designation"]); ?></small></td>
+                                        <td><?php echo $t["check_in"] ?? "â€”"; ?></td>
+                                        <td><?php echo $t["check_out"] ?? "â€”"; ?></td>
+                                        <td><?php echo $t["working_hours"] ? ($t["working_hours"] . " hrs") : "â€”"; ?></td>
+                                        <td>
+                                            <span class="badge status-<?php echo strtolower($t["status"] ?? "ABSENT"); ?>">
+                                                <?php echo $t["status"] ?? "ABSENT"; ?>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <?php 
+                                    endwhile;
+                                else:
+                                ?>
+                                    <tr>
+                                        <td colspan="6" class="center-text">No active team members reported under your manager profile.</td>
+                                    </tr>
+                                <?php endif; $stmt->close(); ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Project Control Tab -->
+                <section id="mgr-projects" class="tab-content">
+                    <div class="section-header">
+                        <h2>Team Project & Task Manager</h2>
+                        <p>Manage project resources and employee project assignments.</p>
+                    </div>
+
+                    <div class="grid-2col">
+                        <!-- Project Assign form -->
+                        <div class="card content-panel">
+                            <h3>Assign Team Member to Project</h3>
+                            <form action="actions.php" method="POST" class="standard-form">
+                                <input type="hidden" name="action" value="assign_employee_project">
+
+                                <div class="form-group">
+                                    <label>Select Project</label>
+                                    <select name="project_id" required>
+                                        <option value="">-- Choose Project --</option>
+                                        <?php
+                                        // Retrieve projects managed by this employee
+                                        $stmt = $conn->prepare("SELECT project_id, project_name FROM projects WHERE manager_id = ? AND status='ACTIVE'");
+                                        $stmt->bind_param("i", $employee_id);
+                                        $stmt->execute();
+                                        $pRes = $stmt->get_result();
+                                        while ($pRow = $pRes->fetch_assoc()):
+                                        ?>
+                                            <option value="<?php echo $pRow["project_id"]; ?>"><?php echo htmlspecialchars($pRow["project_name"]); ?></option>
+                                        <?php endwhile; $stmt->close(); ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Team Member</label>
+                                    <select name="employee_id" required>
+                                        <option value="">-- Choose Employee --</option>
+                                        <?php
+                                        // Employees reporting to this manager
+                                        $stmt = $conn->prepare("SELECT employee_id, first_name, last_name FROM employees WHERE manager_id = ? AND employment_status = 'ACTIVE'");
+                                        $stmt->bind_param("i", $employee_id);
+                                        $stmt->execute();
+                                        $eRes = $stmt->get_result();
+                                        while ($eRow = $eRes->fetch_assoc()):
+                                        ?>
+                                            <option value="<?php echo $eRow["employee_id"]; ?>"><?php echo htmlspecialchars($eRow["first_name"] . " " . $eRow["last_name"]); ?></option>
+                                        <?php endwhile; $stmt->close(); ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Role in Project</label>
+                                    <input type="text" name="role" placeholder="e.g. Lead Analyst, Developer, QA Engineer" required>
+                                </div>
+
+                                <button class="action-btn submit-btn" type="submit">Assign to Project</button>
+                            </form>
+                        </div>
+
+                        <!-- Current Project Resource Allocations -->
+                        <div class="table-container content-panel">
+                            <h3>Active Project Team Mappings</h3>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Team Member</th>
+                                        <th>Project Role</th>
+                                        <th>Assigned Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $stmt = $conn->prepare("SELECT p.project_name, e.first_name, e.last_name, ep.role, ep.assigned_date 
+                                                            FROM employee_projects ep 
+                                                            JOIN projects p ON ep.project_id = p.project_id 
+                                                            JOIN employees e ON ep.employee_id = e.employee_id 
+                                                            WHERE p.manager_id = ? AND ep.assignment_status = 'ACTIVE'");
+                                    $stmt->bind_param("i", $employee_id);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    if ($res->num_rows > 0):
+                                        while ($epRow = $res->fetch_assoc()):
+                                    ?>
+                                        <tr>
+                                            <td><strong><?php echo htmlspecialchars($epRow["project_name"]); ?></strong></td>
+                                            <td><?php echo htmlspecialchars($epRow["first_name"] . " " . $epRow["last_name"]); ?></td>
+                                            <td><small><?php echo htmlspecialchars($epRow["role"]); ?></small></td>
+                                            <td><?php echo $epRow["assigned_date"]; ?></td>
+                                        </tr>
+                                    <?php 
+                                        endwhile;
+                                    else:
+                                    ?>
+                                        <tr>
+                                            <td colspan="4" class="center-text">No active assignments found for your managed projects.</td>
+                                        </tr>
+                                    <?php endif; $stmt->close(); ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            <?php endif; ?>
+
 </main></div><script src="script.js"></script></body></html>
