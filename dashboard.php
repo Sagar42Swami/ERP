@@ -106,68 +106,68 @@ if (in_array($role, ["ADMIN", "HR", "MANAGER"])) {
 
             <nav class="menu">
                 <a href="#" class="menu-item active" data-tab="overview">
-                    <span class="icon">â˜–</span> Overview
+                    <span class="icon">☖</span> Overview
                 </a>
 
                 <?php if ($role === "EMPLOYEE"): ?>
                     <a href="#" class="menu-item" data-tab="emp-attendance">
-                        <span class="icon">ðŸ“…</span> Attendance
+                        <span class="icon">📅</span> Attendance
                     </a>
                     <a href="#" class="menu-item" data-tab="emp-leaves">
-                        <span class="icon">âœ‰</span> Leave Requests
+                        <span class="icon">✉</span> Leave Requests
                     </a>
                     <a href="#" class="menu-item" data-tab="emp-payroll">
-                        <span class="icon">ðŸ’µ</span> Pay Slips
+                        <span class="icon">💵</span> Pay Slips
                     </a>
                     <a href="#" class="menu-item" data-tab="emp-projects">
-                        <span class="icon">ðŸ’¼</span> My Projects
+                        <span class="icon">💼</span> My Projects
                     </a>
                 <?php endif; ?>
 
                 <?php if ($role === "MANAGER"): ?>
                     <a href="#" class="menu-item" data-tab="mgr-leaves">
-                        <span class="icon">âœ‰</span> Team Leaves
+                        <span class="icon">✉</span> Team Leaves
                     </a>
                     <a href="#" class="menu-item" data-tab="mgr-attendance">
-                        <span class="icon">ðŸ“…</span> Team Attendance
+                        <span class="icon">📅</span> Team Attendance
                     </a>
                     <a href="#" class="menu-item" data-tab="mgr-projects">
-                        <span class="icon">ðŸ’¼</span> Project Control
+                        <span class="icon">💼</span> Project Control
                     </a>
                 <?php endif; ?>
 
                 <?php if ($role === "HR"): ?>
                     <a href="#" class="menu-item" data-tab="hr-employees">
-                        <span class="icon">ðŸ‘¥</span> Employees
+                        <span class="icon">👥</span> Employees
                     </a>
                     <a href="#" class="menu-item" data-tab="hr-leaves">
-                        <span class="icon">âœ‰</span> All Leaves
+                        <span class="icon">✉</span> All Leaves
                     </a>
                     <a href="#" class="menu-item" data-tab="hr-payroll">
-                        <span class="icon">ðŸ’µ</span> Manage Payroll
+                        <span class="icon">💵</span> Manage Payroll
                     </a>
                     <a href="#" class="menu-item" data-tab="hr-attendance">
-                        <span class="icon">ðŸ“…</span> Attendance Tracker
+                        <span class="icon">📅</span> Attendance Tracker
                     </a>
                 <?php endif; ?>
 
                 <?php if ($role === "ADMIN"): ?>
                     <a href="#" class="menu-item" data-tab="admin-users">
-                        <span class="icon">ðŸ”’</span> User Accounts
+                        <span class="icon">🔒</span> User Accounts
                     </a>
                     <a href="#" class="menu-item" data-tab="admin-departments">
-                        <span class="icon">ðŸ¢</span> Departments
+                        <span class="icon">🏢</span> Departments
                     </a>
                     <a href="#" class="menu-item" data-tab="admin-projects">
-                        <span class="icon">ðŸ’¼</span> Project Management
+                        <span class="icon">💼</span> Project Management
                     </a>
                     <a href="#" class="menu-item" data-tab="admin-employees">
-                        <span class="icon">ðŸ‘¥</span> All Employees
+                        <span class="icon">👥</span> All Employees
                     </a>
                 <?php endif; ?>
 
                 <a href="logout.php" class="menu-item logout-item">
-                    <span class="icon">âž”</span> Logout
+                    <span class="icon">➔</span> Logout
                 </a>
             </nav>
         </aside>
@@ -188,9 +188,9 @@ if (in_array($role, ["ADMIN", "HR", "MANAGER"])) {
             <!-- Status Banner alerts -->
             <?php if (!empty($status_type)): ?>
                 <div class="alert-banner <?php echo $status_type === "success" ? "alert-success" : "alert-error"; ?>">
-                    <span class="alert-icon"><?php echo $status_type === "success" ? "âœ“" : "âš "; ?></span>
+                    <span class="alert-icon"><?php echo $status_type === "success" ? "✓" : "⚠"; ?></span>
                     <span class="alert-text"><?php echo htmlspecialchars($status_msg); ?></span>
-                    <button class="alert-close" onclick="this.parentElement.remove()">Ã—</button>
+                    <button class="alert-close" onclick="this.parentElement.remove()">×</button>
                 </div>
             <?php endif; ?>
 
@@ -465,9 +465,9 @@ if (in_array($role, ["ADMIN", "HR", "MANAGER"])) {
                                 ?>
                                     <tr>
                                         <td><strong><?php echo $att["attendance_date"]; ?></strong></td>
-                                        <td><?php echo $att["check_in"] ?? "â€”"; ?></td>
-                                        <td><?php echo $att["check_out"] ?? "â€”"; ?></td>
-                                        <td><?php echo $att["working_hours"] ? ($att["working_hours"] . " hrs") : "â€”"; ?></td>
+                                        <td><?php echo $att["check_in"] ?? "—"; ?></td>
+                                        <td><?php echo $att["check_out"] ?? "—"; ?></td>
+                                        <td><?php echo $att["working_hours"] ? ($att["working_hours"] . " hrs") : "—"; ?></td>
                                         <td><span class="badge status-<?php echo strtolower($att["status"]); ?>"><?php echo $att["status"]; ?></span></td>
                                         <td><?php echo htmlspecialchars($att["remarks"] ?? ""); ?></td>
                                     </tr>
@@ -612,7 +612,7 @@ if (in_array($role, ["ADMIN", "HR", "MANAGER"])) {
                                         <td>$<?php echo number_format($p["tax"], 2); ?></td>
                                         <td class="highlight-net">$<strong><?php echo number_format($p["net_salary"], 2); ?></strong></td>
                                         <td><span class="badge status-<?php echo strtolower($p["payment_status"]); ?>"><?php echo $p["payment_status"]; ?></span></td>
-                                        <td><?php echo $p["payment_date"] ?? "â€”"; ?></td>
+                                        <td><?php echo $p["payment_date"] ?? "—"; ?></td>
                                     </tr>
                                 <?php 
                                     endwhile;
@@ -790,9 +790,9 @@ if (in_array($role, ["ADMIN", "HR", "MANAGER"])) {
                                     <tr>
                                         <td><strong><?php echo htmlspecialchars($t["first_name"] . " " . $t["last_name"]); ?></strong></td>
                                         <td><small><?php echo htmlspecialchars($t["designation"]); ?></small></td>
-                                        <td><?php echo $t["check_in"] ?? "â€”"; ?></td>
-                                        <td><?php echo $t["check_out"] ?? "â€”"; ?></td>
-                                        <td><?php echo $t["working_hours"] ? ($t["working_hours"] . " hrs") : "â€”"; ?></td>
+                                        <td><?php echo $t["check_in"] ?? "—"; ?></td>
+                                        <td><?php echo $t["check_out"] ?? "—"; ?></td>
+                                        <td><?php echo $t["working_hours"] ? ($t["working_hours"] . " hrs") : "—"; ?></td>
                                         <td>
                                             <span class="badge status-<?php echo strtolower($t["status"] ?? "ABSENT"); ?>">
                                                 <?php echo $t["status"] ?? "ABSENT"; ?>
@@ -915,4 +915,727 @@ if (in_array($role, ["ADMIN", "HR", "MANAGER"])) {
                 </section>
             <?php endif; ?>
 
-</main></div><script src="script.js"></script></body></html>
+            <!-- ---------------------------------------------------- -->
+            <!-- HR TABS -->
+            <!-- ---------------------------------------------------- -->
+            <?php if ($role === "HR"): ?>
+                <!-- Employees Tab -->
+                <section id="hr-employees" class="tab-content">
+                    <div class="section-header">
+                        <h2>Staff Directory Management</h2>
+                        <p>View, onboard, and modify employee profiles and departments.</p>
+                    </div>
+
+                    <!-- Add Employee Note -->
+                    <div class="alert-box content-panel info">
+                        <h3>Need to onboard a new employee?</h3>
+                        <p>Please use the <a href="signup.html" target="_blank" style="text-decoration: underline; color: inherit; font-weight: 600;">ERP Registration Link</a> to add employees and set up their active login profile concurrently.</p>
+                    </div>
+
+                    <!-- Update Employee Form -->
+                    <div class="card content-panel">
+                        <h3>Update Employee Details</h3>
+                        <form action="actions.php" method="POST" class="standard-form horizontal-form">
+                            <input type="hidden" name="action" value="update_employee">
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Select Employee</label>
+                                    <select name="employee_id" id="edit_emp_select" onchange="populateEmployeeEditForm(this.value)" required>
+                                        <option value="">-- Choose Employee to Modify --</option>
+                                        <?php foreach ($all_employees as $emp): ?>
+                                            <option value="<?php echo $emp["employee_id"]; ?>"><?php echo htmlspecialchars($emp["first_name"] . " " . $emp["last_name"]); ?> (#<?php echo $emp["employee_id"]; ?>)</option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" name="first_name" id="edit_emp_fname" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" name="last_name" id="edit_emp_lname" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" name="email" id="edit_emp_email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="text" name="phone" id="edit_emp_phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Salary (USD)</label>
+                                    <input type="number" name="salary" id="edit_emp_salary" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Designation</label>
+                                    <input type="text" name="designation" id="edit_emp_desig" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select name="department_id" id="edit_emp_dept" required>
+                                        <?php foreach ($all_departments as $d): ?>
+                                            <option value="<?php echo $d["department_id"]; ?>"><?php echo htmlspecialchars($d["department_name"]); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reporting Manager</label>
+                                    <select name="manager_id" id="edit_emp_mgr">
+                                        <option value="0">None</option>
+                                        <?php foreach ($all_employees as $mgr): ?>
+                                            <option value="<?php echo $mgr["employee_id"]; ?>"><?php echo htmlspecialchars($mgr["first_name"] . " " . $mgr["last_name"]); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Employment Status</label>
+                                    <select name="employment_status" id="edit_emp_status" required>
+                                        <option value="ACTIVE">Active Employee</option>
+                                        <option value="INACTIVE">Inactive / Suspended</option>
+                                        <option value="RESIGNED">Resigned / Terminated</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="justify-content: flex-end; align-items: flex-end; display: flex;">
+                                    <button class="action-btn submit-btn" type="submit" style="width: 100%;">Save Modifications</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Employee Table List -->
+                    <div class="table-container content-panel">
+                        <h3>Employee Records Database</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Full Name</th>
+                                    <th>Email & Phone</th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Salary</th>
+                                    <th>Manager</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $res = $conn->query("SELECT e.*, d.department_name, m.first_name as m_fname, m.last_name as m_lname 
+                                                     FROM employees e 
+                                                     LEFT JOIN departments d ON e.department_id = d.department_id 
+                                                     LEFT JOIN employees m ON e.manager_id = m.employee_id 
+                                                     ORDER BY e.employee_id ASC");
+                                while ($e = $res->fetch_assoc()):
+                                ?>
+                                    <tr id="emp_row_<?php echo $e["employee_id"]; ?>" 
+                                        data-fname="<?php echo htmlspecialchars($e["first_name"]); ?>"
+                                        data-lname="<?php echo htmlspecialchars($e["last_name"]); ?>"
+                                        data-email="<?php echo htmlspecialchars($e["email"]); ?>"
+                                        data-phone="<?php echo htmlspecialchars($e["phone"]); ?>"
+                                        data-salary="<?php echo htmlspecialchars($e["salary"]); ?>"
+                                        data-desig="<?php echo htmlspecialchars($e["designation"]); ?>"
+                                        data-dept="<?php echo htmlspecialchars($e["department_id"]); ?>"
+                                        data-mgr="<?php echo htmlspecialchars($e["manager_id"] ?? 0); ?>"
+                                        data-status="<?php echo htmlspecialchars($e["employment_status"]); ?>">
+                                        <td>#<?php echo $e["employee_id"]; ?></td>
+                                        <td><strong><?php echo htmlspecialchars($e["first_name"] . " " . $e["last_name"]); ?></strong></td>
+                                        <td>
+                                            <small><?php echo htmlspecialchars($e["email"]); ?></small><br>
+                                            <small class="muted-text"><?php echo htmlspecialchars($e["phone"]); ?></small>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($e["department_name"] ?? "Not Assigned"); ?></td>
+                                        <td><?php echo htmlspecialchars($e["designation"]); ?></td>
+                                        <td>$<?php echo number_format($e["salary"], 2); ?></td>
+                                        <td><?php echo $e["manager_id"] ? htmlspecialchars($e["m_fname"] . " " . $e["m_lname"]) : "—"; ?></td>
+                                        <td><span class="badge status-<?php echo strtolower($e["employment_status"]); ?>"><?php echo $e["employment_status"]; ?></span></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- All Leaves Tab -->
+                <section id="hr-leaves" class="tab-content">
+                    <div class="section-header">
+                        <h2>Leave System Overview</h2>
+                        <p>View leave request statuses from all departments.</p>
+                    </div>
+
+                    <div class="table-container content-panel">
+                        <h3>Employee Leave Registers</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Leave Period</th>
+                                    <th>Type</th>
+                                    <th>Reason</th>
+                                    <th>Status</th>
+                                    <th>Handled By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $res = $conn->query("SELECT l.*, e.first_name, e.last_name, mgr.first_name as m_fname, mgr.last_name as m_lname 
+                                                     FROM leaves l 
+                                                     JOIN employees e ON l.employee_id = e.employee_id 
+                                                     LEFT JOIN employees mgr ON l.approved_by = mgr.employee_id 
+                                                     ORDER BY l.applied_at DESC");
+                                if ($res->num_rows > 0):
+                                    while ($l = $res->fetch_assoc()):
+                                ?>
+                                    <tr>
+                                        <td><strong><?php echo htmlspecialchars($l["first_name"] . " " . $l["last_name"]); ?></strong></td>
+                                        <td><?php echo $l["start_date"]; ?> to <?php echo $l["end_date"]; ?></td>
+                                        <td><?php echo $l["leave_type"]; ?></td>
+                                        <td><small><?php echo htmlspecialchars($l["reason"]); ?></small></td>
+                                        <td><span class="badge status-<?php echo strtolower($l["status"]); ?>"><?php echo $l["status"]; ?></span></td>
+                                        <td><?php echo $l["approved_by"] ? htmlspecialchars($l["m_fname"] . " " . $l["m_lname"]) : "—"; ?></td>
+                                    </tr>
+                                <?php 
+                                    endwhile;
+                                else:
+                                ?>
+                                    <tr>
+                                        <td colspan="6" class="center-text">No leaves filed.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Manage Payroll Tab -->
+                <section id="hr-payroll" class="tab-content">
+                    <div class="section-header">
+                        <h2>Payroll & Salary Run Management</h2>
+                        <p>Calculate salaries, tax components, and authorize monthly payouts.</p>
+                    </div>
+
+                    <div class="grid-2col">
+                        <!-- Create Payroll Form -->
+                        <div class="card content-panel">
+                            <h3>Generate Monthly Payroll Slips</h3>
+                            <p class="sub-text">Calculates tax (8% of gross salary) and writes records with UNIQUE(employee, month) verification.</p>
+                            <form action="actions.php" method="POST" class="standard-form">
+                                <input type="hidden" name="action" value="generate_payroll">
+
+                                <div class="form-group">
+                                    <label>Select Employee</label>
+                                    <select name="employee_id" required>
+                                        <option value="">-- Choose Employee --</option>
+                                        <?php foreach ($all_employees as $emp): ?>
+                                            <option value="<?php echo $emp["employee_id"]; ?>"><?php echo htmlspecialchars($emp["first_name"] . " " . $emp["last_name"]); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Select Month</label>
+                                    <input type="month" name="salary_month" required value="<?php echo date("Y-m"); ?>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Allowance (USD)</label>
+                                    <input type="number" name="allowance" min="0" value="0" step="0.01">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Bonus (USD)</label>
+                                    <input type="number" name="bonus" min="0" value="0" step="0.01">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Deductions (USD)</label>
+                                    <input type="number" name="deduction" min="0" value="0" step="0.01">
+                                </div>
+
+                                <button class="action-btn submit-btn" type="submit">Generate Payroll Sheet</button>
+                            </form>
+                        </div>
+
+                        <!-- All Payroll Sheet List -->
+                        <div class="table-container content-panel">
+                            <h3>Salaries and Payments Register</h3>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Month</th>
+                                        <th>Net Salary</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $res = $conn->query("SELECT p.*, e.first_name, e.last_name 
+                                                         FROM payroll p 
+                                                         JOIN employees e ON p.employee_id = e.employee_id 
+                                                         ORDER BY p.salary_month DESC");
+                                    if ($res->num_rows > 0):
+                                        while ($p = $res->fetch_assoc()):
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <strong><?php echo htmlspecialchars($p["first_name"] . " " . $p["last_name"]); ?></strong><br>
+                                                <small class="muted-text">Basic: $<?php echo number_format($p["basic_salary"], 2); ?></small>
+                                            </td>
+                                            <td><?php echo date("M-Y", strtotime($p["salary_month"])); ?></td>
+                                            <td>$<strong><?php echo number_format($p["net_salary"], 2); ?></strong></td>
+                                            <td><span class="badge status-<?php echo strtolower($p["payment_status"]); ?>"><?php echo $p["payment_status"]; ?></span></td>
+                                            <td>
+                                                <?php if ($p["payment_status"] === "PENDING"): ?>
+                                                    <form action="actions.php" method="POST">
+                                                        <input type="hidden" name="action" value="pay_payroll">
+                                                        <input type="hidden" name="payroll_id" value="<?php echo $p["payroll_id"]; ?>">
+                                                        <button class="small-btn approve-btn" type="submit">Mark Paid</button>
+                                                    </form>
+                                                <?php else: ?>
+                                                    Paid on:<br><small><?php echo $p["payment_date"]; ?></small>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php 
+                                        endwhile;
+                                    else:
+                                    ?>
+                                        <tr>
+                                            <td colspan="5" class="center-text">No payroll records logged.</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Attendance Tracker Tab -->
+                <section id="hr-attendance" class="tab-content">
+                    <div class="section-header">
+                        <h2>Overall Attendance Log</h2>
+                        <p>Review daily punch cards across all company personnel.</p>
+                    </div>
+
+                    <div class="table-container content-panel">
+                        <h3>Complete Attendance History</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Employee</th>
+                                    <th>Check-In</th>
+                                    <th>Check-Out</th>
+                                    <th>Worked Hours</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $res = $conn->query("SELECT a.*, e.first_name, e.last_name FROM attendance a JOIN employees e ON a.employee_id = e.employee_id ORDER BY a.attendance_date DESC, a.check_in DESC LIMIT 50");
+                                if ($res->num_rows > 0):
+                                    while ($att = $res->fetch_assoc()):
+                                ?>
+                                    <tr>
+                                        <td><strong><?php echo $att["attendance_date"]; ?></strong></td>
+                                        <td><strong><?php echo htmlspecialchars($att["first_name"] . " " . $att["last_name"]); ?></strong></td>
+                                        <td><?php echo $att["check_in"] ?? "—"; ?></td>
+                                        <td><?php echo $att["check_out"] ?? "—"; ?></td>
+                                        <td><?php echo $att["working_hours"] ? ($att["working_hours"] . " hrs") : "—"; ?></td>
+                                        <td><span class="badge status-<?php echo strtolower($att["status"]); ?>"><?php echo $att["status"]; ?></span></td>
+                                        <td><small><?php echo htmlspecialchars($att["remarks"] ?? ""); ?></small></td>
+                                    </tr>
+                                <?php 
+                                    endwhile;
+                                else:
+                                ?>
+                                    <tr>
+                                        <td colspan="7" class="center-text">No attendance records stored in database yet.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            <?php endif; ?>
+
+            <!-- ---------------------------------------------------- -->
+            <!-- ADMIN TABS -->
+            <!-- ---------------------------------------------------- -->
+            <?php if ($role === "ADMIN"): ?>
+                <!-- User Accounts Tab -->
+                <section id="admin-users" class="tab-content">
+                    <div class="section-header">
+                        <h2>User Credentials and Role Manager</h2>
+                        <p>Modify application roles and lock/unlock login system access profiles.</p>
+                    </div>
+
+                    <div class="card content-panel">
+                        <h3>Modify System Account Access</h3>
+                        <form action="actions.php" method="POST" class="standard-form horizontal-form">
+                            <input type="hidden" name="action" value="update_user_status">
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Select Login Account</label>
+                                    <select name="target_user_id" id="edit_user_select" onchange="populateUserEditForm(this.value)" required>
+                                        <option value="">-- Choose User Account --</option>
+                                        <?php
+                                        $uRes = $conn->query("SELECT user_id, username, email FROM users ORDER BY username");
+                                        while ($uRow = $uRes->fetch_assoc()):
+                                        ?>
+                                            <option value="<?php echo $uRow["user_id"]; ?>"><?php echo htmlspecialchars($uRow["username"]); ?> (<?php echo htmlspecialchars($uRow["email"]); ?>)</option>
+                                        <?php endwhile; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>System Permission Role</label>
+                                    <select name="role" id="edit_user_role" required>
+                                        <option value="EMPLOYEE">Employee (Standard Access)</option>
+                                        <option value="MANAGER">Manager (Team Leader)</option>
+                                        <option value="HR">HR Specialist</option>
+                                        <option value="ADMIN">System Administrator</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Account Status</label>
+                                    <select name="account_status" id="edit_user_status" required>
+                                        <option value="ACTIVE">ACTIVE (Access Granted)</option>
+                                        <option value="INACTIVE">INACTIVE (Locked/Suspended)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="justify-content: flex-end; align-items: flex-end; display: flex;">
+                                    <button class="action-btn submit-btn" type="submit" style="width: 100%;">Save Access Profile</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="table-container content-panel">
+                        <h3>Registered ERP Login Users</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Username</th>
+                                    <th>Email Address</th>
+                                    <th>Assigned Role</th>
+                                    <th>Employee ID</th>
+                                    <th>Status</th>
+                                    <th>Last Login Session</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $uRes = $conn->query("SELECT u.*, e.first_name, e.last_name FROM users u LEFT JOIN employees e ON u.employee_id = e.employee_id ORDER BY u.user_id ASC");
+                                while ($u = $uRes->fetch_assoc()):
+                                ?>
+                                    <tr id="user_row_<?php echo $u["user_id"]; ?>"
+                                        data-role="<?php echo htmlspecialchars($u["role"]); ?>"
+                                        data-status="<?php echo htmlspecialchars($u["account_status"]); ?>">
+                                        <td>#<?php echo $u["user_id"]; ?></td>
+                                        <td><strong><?php echo htmlspecialchars($u["username"]); ?></strong></td>
+                                        <td><?php echo htmlspecialchars($u["email"]); ?></td>
+                                        <td><span class="badge role-badge <?php echo strtolower($u["role"]); ?>-badge"><?php echo $u["role"]; ?></span></td>
+                                        <td><?php echo $u["employee_id"] ? ("#" . $u["employee_id"] . " (" . htmlspecialchars($u["first_name"] . " " . $u["last_name"]) . ")") : "<span class='muted-text'>None (SysAdmin Only)</span>"; ?></td>
+                                        <td><span class="badge status-<?php echo strtolower($u["account_status"]); ?>"><?php echo $u["account_status"]; ?></span></td>
+                                        <td><small><?php echo $u["last_login"] ?? "Never logged in"; ?></small></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Departments Tab -->
+                <section id="admin-departments" class="tab-content">
+                    <div class="section-header">
+                        <h2>Departments Management</h2>
+                        <p>Create corporate divisions and assign management personnel.</p>
+                    </div>
+
+                    <div class="grid-2col">
+                        <!-- Add Department Form -->
+                        <div class="card content-panel">
+                            <h3>Create New Department</h3>
+                            <form action="actions.php" method="POST" class="standard-form">
+                                <input type="hidden" name="action" value="create_department">
+
+                                <div class="form-group">
+                                    <label>Department Name</label>
+                                    <input type="text" name="department_name" placeholder="e.g. Quality Assurance" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input type="text" name="description" placeholder="Corporate description of division">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Office Location / Desk Space</label>
+                                    <input type="text" name="location" placeholder="e.g. Block C, Floor 4">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Assigned Department Manager</label>
+                                    <select name="manager_id">
+                                        <option value="0">-- Select Manager (Optional) --</option>
+                                        <?php foreach ($all_employees as $emp): ?>
+                                            <option value="<?php echo $emp["employee_id"]; ?>"><?php echo htmlspecialchars($emp["first_name"] . " " . $emp["last_name"]); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <button class="action-btn submit-btn" type="submit">Create Division</button>
+                            </form>
+                        </div>
+
+                        <!-- Department registers -->
+                        <div class="table-container content-panel">
+                            <h3>Corporate Division List</h3>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Assigned Manager</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $dRes = $conn->query("SELECT d.*, e.first_name, e.last_name FROM departments d LEFT JOIN employees e ON d.manager_id = e.employee_id ORDER BY d.department_name");
+                                    while ($d = $dRes->fetch_assoc()):
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <strong><?php echo htmlspecialchars($d["department_name"]); ?></strong><br>
+                                                <small class="muted-text"><?php echo htmlspecialchars($d["description"] ?? ""); ?></small>
+                                            </td>
+                                            <td><?php echo htmlspecialchars($d["location"] ?? "—"); ?></td>
+                                            <td><?php echo $d["manager_id"] ? htmlspecialchars($d["first_name"] . " " . $d["last_name"]) : "Vacant"; ?></td>
+                                            <td><small><?php echo date("Y-m-d", strtotime($d["created_at"])); ?></small></td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Projects Tab (Admin) -->
+                <section id="admin-projects" class="tab-content">
+                    <div class="section-header">
+                        <h2>Projects and Assignments Engine</h2>
+                        <p>Deploy company initiatives, budget allowances, and allocate resources (M:N mapping).</p>
+                    </div>
+
+                    <div class="grid-2col">
+                        <!-- Add Project Form -->
+                        <div class="card content-panel">
+                            <h3>Initiate Corporate Project</h3>
+                            <form action="actions.php" method="POST" class="standard-form">
+                                <input type="hidden" name="action" value="create_project">
+
+                                <div class="form-group">
+                                    <label>Project Name</label>
+                                    <input type="text" name="project_name" placeholder="ERP Automation Module" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Project Description</label>
+                                    <textarea name="description" placeholder="Project goals and technical brief" rows="3"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <input type="date" name="start_date" required value="<?php echo date("Y-m-d"); ?>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Target End Date</label>
+                                    <input type="date" name="end_date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Financial Budget Allowance (USD)</label>
+                                    <input type="number" name="budget" placeholder="100000" min="0" step="0.01" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Responsible Lead Manager</label>
+                                    <select name="manager_id">
+                                        <option value="0">-- Select Manager --</option>
+                                        <?php foreach ($all_employees as $emp): ?>
+                                            <option value="<?php echo $emp["employee_id"]; ?>"><?php echo htmlspecialchars($emp["first_name"] . " " . $emp["last_name"]); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <button class="action-btn submit-btn" type="submit">Register Project</button>
+                            </form>
+                        </div>
+
+                        <!-- Project Assign form (Admin version) -->
+                        <div class="card content-panel">
+                            <h3>Map Employee to Project (M:N Relationship)</h3>
+                            <p class="sub-text">Resolves many-to-many relationships, recording active roles.</p>
+                            <form action="actions.php" method="POST" class="standard-form">
+                                <input type="hidden" name="action" value="assign_employee_project">
+
+                                <div class="form-group">
+                                    <label>Select Project</label>
+                                    <select name="project_id" required>
+                                        <option value="">-- Choose Project --</option>
+                                        <?php
+                                        $stmt = $conn->query("SELECT project_id, project_name FROM projects ORDER BY project_name");
+                                        while ($pRow = $stmt->fetch_assoc()):
+                                        ?>
+                                            <option value="<?php echo $pRow["project_id"]; ?>"><?php echo htmlspecialchars($pRow["project_name"]); ?></option>
+                                        <?php endwhile; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Select Employee</label>
+                                    <select name="employee_id" required>
+                                        <option value="">-- Choose Employee --</option>
+                                        <?php foreach ($all_employees as $eRow): ?>
+                                            <option value="<?php echo $eRow["employee_id"]; ?>"><?php echo htmlspecialchars($eRow["first_name"] . " " . $eRow["last_name"]); ?> (<?php echo htmlspecialchars($eRow["designation"]); ?>)</option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Role in Project Group</label>
+                                    <input type="text" name="role" placeholder="e.g. Lead Architect, QA Specialist" required>
+                                </div>
+
+                                <button class="action-btn submit-btn" type="submit">Map Staff Allocation</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Projects and Assignments Table -->
+                    <div class="table-container content-panel">
+                        <h3>Active Projects and Allocated Team Size</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Timeline</th>
+                                    <th>Budget</th>
+                                    <th>Manager</th>
+                                    <th>Status</th>
+                                    <th>Team Size</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $pRes = $conn->query("SELECT p.*, e.first_name, e.last_name, (SELECT COUNT(*) FROM employee_projects ep WHERE ep.project_id = p.project_id) as team_size 
+                                                      FROM projects p 
+                                                      LEFT JOIN employees e ON p.manager_id = e.employee_id 
+                                                      ORDER BY p.start_date DESC");
+                                if ($pRes->num_rows > 0):
+                                    while ($pr = $pRes->fetch_assoc()):
+                                ?>
+                                    <tr>
+                                        <td>
+                                            <strong><?php echo htmlspecialchars($pr["project_name"]); ?></strong><br>
+                                            <small class="muted-text"><?php echo htmlspecialchars($pr["description"]); ?></small>
+                                        </td>
+                                        <td>
+                                            <small>Start: <?php echo $pr["start_date"]; ?></small><br>
+                                            <small>End: <?php echo $pr["end_date"] ?? "Ongoing"; ?></small>
+                                        </td>
+                                        <td>$<?php echo number_format($pr["budget"], 2); ?></td>
+                                        <td><?php echo $pr["manager_id"] ? htmlspecialchars($pr["first_name"] . " " . $pr["last_name"]) : "Admin Direct"; ?></td>
+                                        <td><span class="badge status-<?php echo strtolower($pr["status"]); ?>"><?php echo $pr["status"]; ?></span></td>
+                                        <td><strong><?php echo $pr["team_size"]; ?></strong> assigned</td>
+                                    </tr>
+                                <?php 
+                                    endwhile;
+                                else:
+                                ?>
+                                    <tr>
+                                        <td colspan="6" class="center-text">No corporate projects registered yet.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Admin Employees (CRUD access shortcut) -->
+                <section id="admin-employees" class="tab-content">
+                    <div class="section-header">
+                        <h2>Directory Lookup & Control</h2>
+                        <p>Complete directory catalog lists. (Admin View)</p>
+                    </div>
+
+                    <div class="table-container content-panel">
+                        <h3>Company Personnel Directory</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Designation</th>
+                                    <th>Email & Phone</th>
+                                    <th>Department</th>
+                                    <th>Salary</th>
+                                    <th>Date Hired</th>
+                                    <th>Contract</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $res = $conn->query("SELECT e.*, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id ORDER BY e.employee_id ASC");
+                                while ($e = $res->fetch_assoc()):
+                                ?>
+                                    <tr>
+                                        <td>#<?php echo $e["employee_id"]; ?></td>
+                                        <td><strong><?php echo htmlspecialchars($e["first_name"] . " " . $e["last_name"]); ?></strong></td>
+                                        <td><?php echo htmlspecialchars($e["designation"]); ?></td>
+                                        <td>
+                                            <small><?php echo htmlspecialchars($e["email"]); ?></small><br>
+                                            <small class="muted-text"><?php echo htmlspecialchars($e["phone"]); ?></small>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($e["department_name"] ?? "Not Assigned"); ?></td>
+                                        <td>$<?php echo number_format($e["salary"], 2); ?></td>
+                                        <td><small><?php echo $e["hire_date"]; ?></small></td>
+                                        <td><span class="badge status-<?php echo strtolower($e["employment_status"]); ?>"><?php echo $e["employment_status"]; ?></span></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            <?php endif; ?>
+
+        </main>
+    </div>
+
+    <!-- UI Interactions Script -->
+    <script src="script.js"></script>
+</body>
+</html>
+<?php
+$conn->close();
+?>
